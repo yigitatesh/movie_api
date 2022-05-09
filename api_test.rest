@@ -1,0 +1,19 @@
+// get movies by their IDs
+GET http://localhost:5000/movies/0114709
+
+###
+
+GET http://localhost:5000/movies/627981b3f216f6aa2a22fea3
+
+###
+
+// get random movies
+GET http://localhost:5000/movies/random?amount=10&minyear=2013&maxyear=2017
+
+###
+
+GET http://localhost:5000/movies/random?amount=100&minyear=2009&maxyear=2012
+
+###
+
+GET http://localhost:5000/movies/random
