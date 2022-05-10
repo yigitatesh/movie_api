@@ -14,7 +14,8 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 
 // mongodb database connection
-mongoose.connect(process.env.DATABASE_URL)
+const DATABASE_URL = process.env.DATABASE_URL || "mongodb://localhost/movies"
+mongoose.connect(DATABASE_URL)
 const db = mongoose.connection
 db.on("error", (error) => console.error(error))
 db.once("open", () => console.log("Connected to Database"))
@@ -30,7 +31,7 @@ app.use("/movies", moviesRouter)
 
 
 // read csv file and save the data to mongodb, then start the server
-const csvFilepath = process.env.CSV_FILEPATH
+const csvFilepath = process.env.CSV_FILEPATH || "movies.csv"
 
 // import csv to mongodb and start the server
 async function importCSVStartServer(db, csvFilepath) {
