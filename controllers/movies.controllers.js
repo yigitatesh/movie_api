@@ -9,7 +9,7 @@ const MAX_YEAR = 3000
 
 // get movie by ID
 async function getMovieById(req, res) {
-    res.json(res.movie)
+    res.json({ data: res.movie })
 }
 
 // get random movies according to the given query

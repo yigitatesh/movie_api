@@ -1,21 +1,41 @@
 const csvtojson = require("csvtojson")
+const Movie = require("./models/movie")
 
+
+//// options
+// deletes all movies from db and realoads them from csv
+WIPE_OUT_OLD_DATABASE = false
 
 //// functions to read csv file and save the data to mongodb
 
 // reads csv file and save the data to mongodb
 async function csvToMongodb(db, csvFilepath) {
+
+    if (!WIPE_OUT_OLD_DATABASE) {
+        // if there are movies in database, do not delete them
+        const count = await Movie.count({}).exec()
+
+        if (count > 0) {
+            return
+        }
+    }
+
     let valuesToInsert = []
 
     let source = await csvtojson().fromFile(csvFilepath)
 
     // fetch all data from each row
     for (let movieData of source) {
+        // modify movie data
         const modifiedMovieData = modifyMovieData(movieData)
-        valuesToInsert.push(modifiedMovieData)
+        // convert movie object to mongodb movie model object
+        const movieModel = Movie(modifiedMovieData)
+        // push movie model
+        valuesToInsert.push(movieModel)
     }
 
-    // insert movies to movies table
+    //// insert movies to movies table
+    // define collection of database
     const collectionName = "movies"
     const collection = db.collection(collectionName)
 
@@ -50,7 +70,9 @@ async function csvToMongodb(db, csvFilepath) {
 // modifies and corrects a movie object
 function modifyMovieData(movie) {
     // add "0" to the beginning of imdb ID
-    movie["imdbId"] = "0" + movie["imdbId"]
+    if (movie["imdbId"].length == 6) {
+        movie["imdbId"] =  "0" + movie["imdbId"]
+    }
 
     // correct Imdb Link of the movie (adds a "0" after /tt part)
     movie["imdbLink"] = movie["imdbLink"].replace("/tt", "/tt0")
