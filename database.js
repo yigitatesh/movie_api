@@ -3,7 +3,7 @@ const Movie = require("./models/movie")
 
 
 //// options
-// deletes all movies from db and realoads them from csv
+// deletes all movies from db and reloads them from csv
 WIPE_OUT_OLD_DATABASE = false
 
 //// functions to read csv file and save the data to mongodb
