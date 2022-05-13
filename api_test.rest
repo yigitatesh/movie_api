@@ -17,3 +17,12 @@ GET http://localhost:5000/movies/random?amount=100&minyear=2009&maxyear=2012
 ###
 
 GET http://localhost:5000/movies/random
+
+###
+
+// search movies containing a string in their titles
+GET http://localhost:5000/movies/search/story
+
+###
+
+GET http://localhost:5000/movies/search/toy%20story

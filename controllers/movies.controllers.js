@@ -100,6 +100,26 @@ async function getRandomMovies(req, res) {
     }
 }
 
+// get movies by searching a string in their titles
+async function searchMovieByStringInTitle(req, res, next) {
+    // get string query
+    const { search_string: searchString } = req.params
+
+    // get movies containing this string in their titles
+    try {
+        let result = await Movie.find({ 
+            'title': { $regex: searchString, $options: 'i' } 
+            })
+            .limit(MAX_NUMBER_OF_MOVIES)
+            .exec()
+    
+        return res.status(200).json({ data: result })
+    }
+    catch (err) {
+        return res.status(500).json({ message: err.message })
+    }
+}
+
 
 //// input validators
 function amountValidator(amount) {
@@ -113,27 +133,6 @@ function yearValidator(year) {
 
 module.exports = {
     getMovieById,
-    getRandomMovies
+    getRandomMovies,
+    searchMovieByStringInTitle
 }
-
-/*
-const searchMovieByStringInTitle = (req, res, next) => {
-    // get string query
-    const { string } = req.params
-
-    // search movie by a string in titles
-    const movies = database.search({ title: string})
-
-    if (movies.length === 0) { // a movie is not found
-        res.status(404).json({
-            message: `A movie with a title that contains string '${string}' is not found.`
-        })
-    }
-    else {
-        // send movies data
-        res.status(200).json({ 
-            data: movies 
-        })
-    }
-}
-*/

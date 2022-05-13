@@ -4,7 +4,7 @@ const Movie = require("../models/movie")
 // get movie by imdb ID middleware
 async function getMovieByImdbId(req, res, next) {
     // get imdb ID from params
-    const { imdbId } = req.params
+    const { imdb_id: imdbId } = req.params
 
     let movie
 
