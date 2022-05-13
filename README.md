@@ -2,8 +2,9 @@
 A movie backend API written in NodeJS and Express <br>
 
 You can do these things:
-- GET a movie by an IMDB ID
-- GET some number of random movies by filtering them by year
+- Get a movie by an IMDB ID
+- Get some number of random movies by filtering them by year
+- Get movies by searching a string in their titles
 
 ## How to Start
 
