@@ -16,6 +16,8 @@ router.get("/:id([0-9a-z]{24})", moviesMiddlewares.getMovieById, moviesControlle
 router.get("/random", moviesControllers.getRandomMovies)
 // get movies by searching a string in their titles
 router.get("/search/:search_string", moviesControllers.searchMovieByStringInTitle)
+// get movies by their indexes in the database
+router.get("/by_index", moviesControllers.getMoviesByIndex)
 
 
 module.exports = router

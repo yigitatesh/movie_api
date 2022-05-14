@@ -101,7 +101,7 @@ async function getRandomMovies(req, res) {
 }
 
 // get movies by searching a string in their titles
-async function searchMovieByStringInTitle(req, res, next) {
+async function searchMovieByStringInTitle(req, res) {
     // get string query
     const { search_string: searchString } = req.params
 
@@ -113,6 +113,61 @@ async function searchMovieByStringInTitle(req, res, next) {
             .limit(MAX_NUMBER_OF_MOVIES)
             .exec()
     
+        return res.status(200).json({ data: result })
+    }
+    catch (err) {
+        return res.status(500).json({ message: err.message })
+    }
+}
+
+// get movies by their indexes in the database
+async function getMoviesByIndex(req, res) {
+    //// get query params
+    let query = {}
+
+    // get start index
+    let startIndex = req.query.start
+    if (startIndex != null) {
+        // reject if start is not an integer
+        if (isNaN(startIndex) || startIndex.includes(".") || startIndex.includes("-")) {
+            return res.status(400).json({
+                message: "'start' query parameter must be a non-negative integer"
+            })
+        }
+
+        query.startIndex = parseInt(startIndex)
+    }
+    else {
+        // default value
+        query.startIndex = 0
+    }
+
+    // get end index
+    let endIndex = req.query.end
+    if (endIndex != null) {
+        // reject if end is not an integer
+        if (isNaN(endIndex) || endIndex.includes(".") || endIndex.includes("-")) {
+            return res.status(400).json({
+                message: "'end' query parameter must be a non-negative integer"
+            })
+        }
+
+        // end index should be between start index and start index + MAX_NUMBER_OF_MOVIES
+        query.endIndex = Math.min(Math.max(endIndex, query.startIndex), 
+                                    query.startIndex + MAX_NUMBER_OF_MOVIES)
+    }
+    else {
+        // default value
+        query.endIndex = query.startIndex + MAX_NUMBER_OF_MOVIES
+    }
+
+    try {
+        // get data from the database
+        let result = await Movie.find({})
+            .skip(query.startIndex)
+            .limit(query.endIndex - query.startIndex)
+            .exec()
+
         return res.status(200).json({ data: result })
     }
     catch (err) {
@@ -134,5 +189,6 @@ function yearValidator(year) {
 module.exports = {
     getMovieById,
     getRandomMovies,
-    searchMovieByStringInTitle
+    searchMovieByStringInTitle,
+    getMoviesByIndex
 }

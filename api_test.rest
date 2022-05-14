@@ -26,3 +26,24 @@ GET http://localhost:5000/movies/search/story
 ###
 
 GET http://localhost:5000/movies/search/toy%20story
+
+###
+
+// get movies by indexes in the database
+GET http://localhost:5000/movies/by_index?start=15&end=47
+
+###
+
+GET http://localhost:5000/movies/by_index?start=24
+
+###
+
+GET http://localhost:5000/movies/by_index?end=24
+
+###
+
+GET http://localhost:5000/movies/by_index
+
+###
+
+GET http://localhost:5000/movies/by_index?start=999999
