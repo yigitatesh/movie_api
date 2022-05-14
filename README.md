@@ -5,6 +5,7 @@ You can do these things:
 - Get a movie by an IMDB ID
 - Get some number of random movies by filtering them by year
 - Get movies by searching a string in their titles
+- Get movies by their indexes in the database
 
 ## How to Start
 
