@@ -7,6 +7,9 @@ You can do these things:
 - Get movies by searching a string in their titles
 - Get movies by their indexes in the database
 
+## Requirements
+- Node.js
+
 ## How to Start
 
 ```bash
